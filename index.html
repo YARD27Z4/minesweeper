@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,14 +13,20 @@
         <h1>Minesweeper</h1>
         
         <table class="board-container">
-            <tbody class="board"></tbody> <!-- הבטיח שה-Tbody עם הקלאס board יקבל תוכן -->
+            <tbody class="board"></tbody> 
         </table>
-
-        <button onclick="onInitGame()">Restart</button>
         <button class="btn" onclick="onInitGame()">Play Again</button>
-
+        <p id="lives">❤️Lives: 3</p> <!-- אלמנט זה מציג את מספר החיים -->
+        
+        <button class="easy levels" onclick="setDifficulty(4)">Easy</button>
+        <button class="medium levels" onclick="setDifficulty(8)">Medium</button>
+        <button class="hard levels" onclick="setDifficulty(12)">Hard</button>
+        
+        
         <script src="/js/main.js"></script>
-        <script src="/util/util.js"></script>
+        <script src="/js/util.js"></script>
 
     </body>
 </html>
+
+
