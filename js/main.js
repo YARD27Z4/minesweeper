@@ -1,9 +1,9 @@
 'use strict'
 const MINE = '💣'
 const FLAG = '🚩'
-const NORMAL = '🙂'
-const LOSE = '🤯'
-const WIN = '😎'
+const NORMAL = '😊'
+const LOSE = '😑'
+const WIN = '😍'
 
 var gBoard
 var gLevel = {
