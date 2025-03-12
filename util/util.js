@@ -42,8 +42,12 @@ function getEmptyCell() {
   if (emptyCells.length === 0) return null
   var randIdx = Math.floor(Math.random() * emptyCells.length)
   return emptyCells[randIdx]
-} // fix by the code
+} 
 
 function playEatingSound() {
   new Audio("sounds/collectFood.mp3").play()
-} // change to what i need
+} 
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}

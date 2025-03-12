@@ -1,4 +1,3 @@
-'use strict'
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,29 +5,21 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Cinema Project</title>
+        <title>Minesweeper</title>
         <link rel="stylesheet" href="/css/style.css" />
     </head>
 
-    <body onload="onInit()">
+    <body onload="onInitGame()">
 
-        <h1>mine sweeper</h1>
+        <h1>Minesweeper</h1>
         
         <table class="board-container">
-            <tbody class="board"> </tbody>
+            <tbody class="board"></tbody> <!-- הבטיח שה-Tbody עם הקלאס board יקבל תוכן -->
         </table>
 
-        <button onclick="onInit()">Restart</button>
-        <button class="btn" onclick="onInit()">Play Again</button>
+        <button onclick="onInitGame()">Restart</button>
+        <button class="btn" onclick="onInitGame()">Play Again</button>
 
-            <button
-                
-                data-i=""
-                data-j=""
-                <!-- onclick="onBookSeat(this)">fjfjjfjf</button> -->
-                
-        
-        
         <script src="/js/main.js"></script>
         <script src="/util/util.js"></script>
 

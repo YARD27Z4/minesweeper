@@ -1,23 +1,30 @@
-body{
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
+/* * {
+  align-items: center;
+} */
+
+.board-container {
+  border-collapse: collapse;
+  margin: 20px;
 }
 
-
-#game-board{
-  display: grid;
-  grid-template-columns: repeat(4, 50px);
-  grid-template-rows: repeat(4, 50px);
-  gap: 5px;
-  justify-content: center;
+.board td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #999;
+  font-size: 20px;
 }
 
 .cell {
-  width: 50px;
-  height: 50px;
-  border: 1px solid black;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 20;
   cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+
+.cell-marked {
+  background-color: #ff0;
+}
+
+button {
+  margin: 10px;
 }
