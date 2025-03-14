@@ -1,39 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Minesweeper</title>
-        <link rel="stylesheet" href="/css/style.css" />
-    </head>
-
-    <body onload="onInitGame()">
-
-        <h1>MineSweeper</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper Game</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* עיצוב מחודש לכפתורים */
+        .levels {
+            display: inline-block;
+            width: 120px;
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #607D8B;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
         
-        <table class="board-container">
-            <tbody class="board"></tbody> 
-        </table>
-        <button class="btn" onclick="onInitGame()">😊</button>
+        .levels:hover {
+            background-color: #FFD54F;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        #darkModeToggle {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <button id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <h1>MineSweeper</h1>
+    <div>
         <p id="lives">❤️Lives: 3</p>
-        
+        <button class="btn" onclick="onInitGame()">😊</button>
+    </div>
+    <table class="board-container">
+        <tbody class="board"></tbody>
+    </table>
+    
+    <div class="button-container">
         <button class="easy levels" onclick="setDifficulty(4)">Easy</button>
         <button class="medium levels" onclick="setDifficulty(8)">Medium</button>
         <button class="hard levels" onclick="setDifficulty(12)">Hard</button>
-        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-
-        
-        <script src="/js/main.js"></script>
-        <script src="/js/util.js"></script>
-
-        <footer style="text-align: center; padding: 10px; color: 222;">
-            <p>Created by Yarden Koriat | <a href="https://github.com/YARD27Z4/minesweeper">Minesweeper Game</a></p>
-        </footer>
+    </div>
     
+    <!-- כפתור עם אנימציה -->
+    <button class="animated-button" onclick="simulateLoading(this)">
+        <span class="default-text">Submit</span>
+        <span class="loading-text">Loading...</span>
+        <span class="checkmark">✔</span>
+    </button>
 
+    <script src="/js/main.js"></script>
+    <script src="/js/util.js"></script>
+    <script>
+        function simulateLoading(button) {
+            button.classList.add("loading");
+            setTimeout(() => {
+                button.classList.remove("loading");
+                button.classList.add("success");
+            }, 2000);
+        }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            let isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            document.getElementById('darkModeToggle').innerText = isDark ? 'Light Mode' : 'Dark Mode';
+        }
+        
+        window.onload = function () {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').innerText = 'Light Mode';
+            }
+        }
+    </script>
 
-    </body>
+    <footer>
+        <p>by Yarden Koriat | <a href="https://github.com/YARD27Z4/minesweeper">Minesweeper Game</a></p>
+    </footer>
+</body>
 </html>
-
-

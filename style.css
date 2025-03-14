@@ -1,0 +1,275 @@
+/* CSS לשולה מוקשים */
+:root {
+  --background-color-light: #5D3A6D; /* רקע כללי - סגול עמוק */
+  --text-color-light: #FFC107; /* צבע טקסט צהוב עמוק */
+  --background-color-dark: #3A2545; /* רקע כהה יותר למצב כהה */
+  --text-color-dark: #FFFFFF;
+  --highlight-color: #FFCA28; /* צבע הדגשה מוזהב */
+  --primary-color: #607D8B; /* כחול אפור לכפתורים */
+  --secondary-color: #455A64; /* רקע לוח המשחק - כחול אפור כהה */
+  --accent-color: #FFCA28; /* צבע אייקונים וכפתורים מיוחדים */
+  --button-hover-color: #FFD54F; /* צבע הובר יותר בהיר ונעים */
+  --border-radius: 10px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background-color 0.5s, color 0.5s;
+  position: relative;
+}
+
+.dark-mode {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+
+.board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.board {
+  border-collapse: collapse;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: var(--secondary-color);
+}
+
+.board td {
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  vertical-align: middle;
+  border: 2px solid #999;
+  font-size: 22px;
+  background-color: #607D8B;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  border-radius: var(--border-radius);
+}
+
+.board td:hover {
+  background-color: var(--highlight-color);
+  transform: scale(1.1);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin: 5px;
+}
+
+button:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
+
+.cell {
+  text-align: center;
+  width: 60px;
+  height: 60px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.3s ease-in-out;
+  background-color: #607D8B;
+  border-radius: var(--border-radius);
+}
+
+.revealed {
+  background-color: #455A64;
+}
+
+.cell:empty {
+  background-color: #37474F;
+}
+
+#darkModeToggle {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 12px 20px;
+  background-color: #222;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: -3px 0 6px rgba(0, 0, 0, 0.3);
+}
+
+#darkModeToggle:hover {
+  background-color: var(--button-hover-color);
+}
+
+#hintButton {
+  background-color: var(--secondary-color);
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+#hintButton:hover {
+  background-color: var(--highlight-color);
+}
+
+#smileyButton {
+  font-size: 35px;
+  padding: 15px;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#smileyButton:hover {
+  background-color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.smiley {
+  font-size: 40px;
+  transition: all 0.2s ease-in-out;
+}
+
+.smiley.normal {
+  color: var(--highlight-color);
+}
+
+.smiley.sad {
+  color: #ff0000;
+}
+
+.smiley.win {
+  color: #00ff00;
+}
+
+@media (max-width: 600px) {
+  .board td {
+      width: 50px;
+      height: 50px;
+  }
+
+  button {
+      padding: 10px 20px;
+      font-size: 16px;
+  }
+
+  #smileyButton {
+      font-size: 30px;
+      padding: 10px;
+  }
+}
+
+/* CSS לשולה מוקשים */
+:root {
+  --background-color-light: #5D3A6D; /* רקע כללי - סגול עמוק */
+  --text-color-light: #FFC107; /* צבע טקסט צהוב עמוק */
+  --background-color-dark: #3A2545; /* רקע כהה יותר למצב כהה */
+  --text-color-dark: #FFFFFF;
+  --highlight-color: #FFCA28; /* צבע הדגשה מוזהב */
+  --primary-color: #607D8B; /* כחול אפור לכפתורים */
+  --secondary-color: #455A64; /* רקע לוח המשחק - כחול אפור כהה */
+  --accent-color: #FFCA28; /* צבע אייקונים וכפתורים מיוחדים */
+  --button-hover-color: #FFD54F; /* צבע הובר יותר בהיר ונעים */
+  --border-radius: 10px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background-color 0.5s, color 0.5s;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-color-light);
+  margin-top: auto;
+}
+
+/* עיצוב כפתור עם אנימציה */
+.animated-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 50px;
+  font-size: 18px;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-button.loading {
+  pointer-events: none;
+}
+
+.animated-button .loading-text {
+  display: none;
+}
+
+.animated-button.loading .loading-text {
+  display: block;
+}
+
+.animated-button .checkmark {
+  display: none;
+  font-size: 22px;
+}
+
+.animated-button.success .checkmark {
+  display: block;
+}
+
+.animated-button.success .default-text,
+.animated-button.loading .default-text {
+  display: none;
+}
+
+.animated-button:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
