@@ -1,16 +1,17 @@
 'use strict'
-const MINE = '💣'
-const FLAG = '🚩'
-const NORMAL = '😊'
-const LOSE = '😑'
-const WIN = '😍'
 
-var firstClick = true
-var gBoard
+const MINE = '💣';
+const FLAG = '🚩';
+const NORMAL = '😊';
+const LOSE = '😑';
+const WIN = '😍';
+
+var gBoard;
+var firstClick = true;
 var gLevel = { 
-  SIZE: 4,
-  MINES: 2
-}
+  SIZE: 4,   // גודל ברירת מחדל של הלוח
+  MINES: 2   // מספר מוקשים בברירת מחדל
+};
 
 var gGame = {
   isOn: false,
@@ -18,178 +19,142 @@ var gGame = {
   markedCount: 0,
   secsPassed: 0,
   lives: 3,
-}
+  hintsLeft: 3, 
+  isHintActive: false
+};
 
+// אתחול המשחק
 function onInitGame() {
-  gBoard = buildBoard()
-  setMinesOnBoard()
-  renderBoard(gBoard)
+  gBoard = buildBoard(); // בניית הלוח
+  renderBoard(gBoard); // הצגת הלוח
+  document.getElementById('hintsLeft').innerText = 'Hints Left: ' + gGame.hintsLeft;
+  document.querySelector('.board').addEventListener('contextmenu', onCellRightClick);
 }
 
-function setMinesOnBoard() {
-  var minesCount = gLevel.MINES
-  var availablePositions = []
-
-  for (var i = 0; i < gLevel.SIZE; i++) {
-    for (var j = 0; j < gLevel.SIZE; j++) {
-      availablePositions.push({ i: i, j: j })
-    }
-  }
-
-
-  while (minesCount > 0) {
-    var randomIndex = getRandomInt(0, availablePositions.length)
-    var position = availablePositions[randomIndex]
-
-    gBoard[position.i][position.j].isMine = true
-    minesCount--;
-
-    if (firstClick && !gBoard[position.i][position.j].isShown) {
-      availablePositions.splice(randomIndex, 1)
-      continue;
-    }
-
-    updateNeighboringCells(gBoard, position.i, position.j)
-    console.table(gBoard)
-    availablePositions.splice(randomIndex, 1)
-  }
-}
-
+// פונקציה לבניית הלוח
 function buildBoard() {
-  var board = []
+  var board = [];
   for (var i = 0; i < gLevel.SIZE; i++) {
-    board.push([])
+    board.push([]);
     for (var j = 0; j < gLevel.SIZE; j++) {
-      var cell = {
+      board[i].push({
         minesAroundCount: 0,
         isCovered: true,
         isMine: false,
         isMarked: false,
         isShown: false
-      }
-      board[i].push(cell)
+      });
     }
   }
-  return board
+  return board;
 }
 
+// מיקום מוקשים על הלוח תוך הימנעות מהקליק הראשון של השחקן
+function setMinesOnBoard(firstI, firstJ) {
+  var minesCount = gLevel.MINES;
+  var availablePositions = [];
+
+  // יצירת מערך עם כל המיקומים האפשריים להנחת מוקשים
+  for (var i = 0; i < gLevel.SIZE; i++) {
+    for (var j = 0; j < gLevel.SIZE; j++) {
+      if (i !== firstI || j !== firstJ) {
+        availablePositions.push({ i: i, j: j });
+      }
+    }
+  }
+
+  // הנחת המוקשים באופן אקראי
+  while (minesCount > 0 && availablePositions.length > 0) {
+    var randomIndex = Math.floor(Math.random() * availablePositions.length);
+    var position = availablePositions.splice(randomIndex, 1)[0];
+    gBoard[position.i][position.j].isMine = true;
+    updateNeighboringCells(gBoard, position.i, position.j);
+    minesCount--;
+  }
+}
+
+// הצגת הלוח על המסך
 function renderBoard(board) {
-  var strHTML = ''
-
+  var strHTML = '';
   for (var i = 0; i < board.length; i++) {
-    strHTML += '<tr>'
+    strHTML += '<tr>';
     for (var j = 0; j < board[0].length; j++) {
-      var cell = board[i][j]
-      var cellContent = ''
-
-      if (cell.isMine) {
-        cellContent = MINE
-      } else if (cell.minesAroundCount > 0) {
-        cellContent = cell.minesAroundCount
-      } else {
-        cellContent = ''  
-      }
-
-      var className = ''
-      var content = cellContent
-
-      if (cell.isCovered) {
-        className = 'covered'
-        content = '' 
-      } else if (cell.isMine) {
-        className = 'mine'
-        content = MINE
-      } else if (cell.isMarked) {
-        className = 'flag'
-        content = FLAG
-      }
-
-strHTML += `<td class="cell ${className} cell-${i}-${j}"
-                data-i="${i}" data-j="${j}"
-                onclick="onCellClicked(this,${i},${j})">
-                 ${content} 
-              </td>`
+      strHTML += `<td class="cell covered cell-${i}-${j}"
+                    data-i="${i}" data-j="${j}"
+                    onclick="onCellClicked(this, ${i}, ${j})">
+                  </td>`;
     }
-    strHTML += '</tr>'
+    strHTML += '</tr>';
   }
-  const elBoard = document.querySelector('.board')
-  elBoard.innerHTML = strHTML
+  document.querySelector('.board').innerHTML = strHTML;
 }
 
+// אירוע לחיצה על תא בלוח
 function onCellClicked(elCell, i, j) {
-  var cell = gBoard[i][j];
+  if (firstClick) {
+    setMinesOnBoard(i, j);
+    firstClick = false;
+  }
+  
+  var currCell = gBoard[i][j];
+  if (currCell.isMarked || currCell.isShown) return;
 
-  if (cell.isMine) {
-      handleMineClick(elCell, i, j)
+  if (currCell.isMine) {
+    gGame.lives--;
+    document.getElementById('lives').innerText = 'Lives: ' + gGame.lives;
+    if (gGame.lives === 0) {
+      alert('Game Over!');
+      revealAllMines();
       return;
-  }
-
-  cell.isShown = true;
-  elCell.classList.add('revealed')
-
-  if (cell.minesAroundCount === 0) {
-      elCell.innerText = ''
-      expandReveal(gBoard, i, j)
+    } else {
+      alert('Boom! You lost a life. Lives left: ' + gGame.lives);
+    }
   } else {
-    elCell.innerText = cell.minesAroundCount === 0 ? '' : cell.minesAroundCount
-
+    currCell.isShown = true;
+    elCell.classList.remove('covered');
+    elCell.innerText = currCell.minesAroundCount || ''; // אם 0 - הצג משבצת ריקה
+    if (currCell.minesAroundCount === 0) {
+      expandReveal(gBoard, i, j);
+    }
+    checkGameOver();
   }
-
-  checkGameOver(gBoard);
 }
 
-
-
-function updateNeighboringCells(board, i, j) {
+// הרחבת החשיפה לתאים שכנים אם אין מוקשים מסביב
+function expandReveal(board, i, j) {
   for (var x = i - 1; x <= i + 1; x++) {
     for (var y = j - 1; y <= j + 1; y++) {
       if (x >= 0 && x < gLevel.SIZE && y >= 0 && y < gLevel.SIZE) {
-        if (!board[x][y].isMine) {
-          board[x][y].minesAroundCount++
+        var neighbor = board[x][y];
+        if (!neighbor.isShown && !neighbor.isMine) {
+          neighbor.isShown = true;
+          var elNeighbor = document.querySelector(`.cell-${x}-${y}`);
+          elNeighbor.classList.remove('covered');
+          elNeighbor.innerText = neighbor.minesAroundCount || ''; // אם 0 - הצג משבצת ריקה
+          if (neighbor.minesAroundCount === 0) expandReveal(board, x, y);
         }
       }
     }
   }
 }
 
-function onCellClicked(elCell, i, j) {
-  if (firstClick) {
-    while (gBoard[i][j].isMine) {
-      const randomI = getRandomInt(0, gLevel.SIZE)
-      const randomJ = getRandomInt(0, gLevel.SIZE)
-      i = randomI
-      j = randomJ
-      if (!gBoard[i][j].isMine) break
+// עדכון ספירת מוקשים עבור תאים שכנים
+function updateNeighboringCells(board, i, j) {
+  for (var x = i - 1; x <= i + 1; x++) {
+    for (var y = j - 1; y <= j + 1; y++) {
+      if (x >= 0 && x < gLevel.SIZE && y >= 0 && y < gLevel.SIZE && !(x === i && y === j)) {
+        board[x][y].minesAroundCount++;
+      }
     }
-    firstClick = false; 
   }
-
-  var currCell = gBoard[i][j];
-  if (currCell.isMine) {
-    gGame.lives--
-    document.getElementById('lives').innerText = 'Lives: ' + gGame.lives;
-    
-    if (gGame.lives === 0) {
-      alert('Game Over!')
-      revealAllMines()
-    } else {
-      alert('Boom! You lost a life. Lives left: ' + gGame.lives);
-    }
-  } else {
-    expandReveal(gBoard, elCell, i, j)
-  }
-
-  checkGameOver(gBoard)
 }
 
-
-
+// הצגת כל המוקשים במקרה של הפסד
 function revealAllMines() {
   for (var i = 0; i < gBoard.length; i++) {
     for (var j = 0; j < gBoard[0].length; j++) {
-      var currCell = gBoard[i][j];
-      if (currCell.isMine) {
-        const elCell = document.querySelector(`.cell-${i}-${j}`);
+      if (gBoard[i][j].isMine) {
+        var elCell = document.querySelector(`.cell-${i}-${j}`);
         elCell.innerText = MINE;
         elCell.classList.add('mine-revealed');
       }
@@ -197,70 +162,15 @@ function revealAllMines() {
   }
 }
 
-
-function expandReveal(board, elCell, i, j) {
-  var currCell = board[i][j]
-  if (!currCell.isShown) {
-    currCell.isShown = true
-    elCell.innerText = currCell.minesAroundCount
-    elCell.classList.add('revealed')
-
-    if (currCell.minesAroundCount === 0) {
-      for (var x = i - 1; x <= i + 1; x++) {
-        for (var y = j - 1; y <= j + 1; y++) {
-          if (x >= 0 && x < gLevel.SIZE && y >= 0 && y < gLevel.SIZE) {
-            const nextCell = document.querySelector(`.cell-${x}-${y}`)
-            expandReveal(board, nextCell, x, y)
-          }
-        }
-      }
+// בדיקת מצב הניצחון
+function checkGameOver() {
+  var revealedCount = 0;
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[0].length; j++) {
+      if (gBoard[i][j].isShown) revealedCount++;
     }
   }
-}
-
-function checkGameOver(board) {
-  var isGameOver = true
-  var totalCoveredCells = 0
-  var totalCells = gLevel.SIZE * gLevel.SIZE
-
-  for (var i = 0; i < board.length; i++) {
-    for (var j = 0; j < board[0].length; j++) {
-      var currCell = board[i][j]
-      if (currCell.isCovered) {
-        totalCoveredCells++
-      }
-      
-      if (currCell.isCovered && !currCell.isMine) {
-        isGameOver = false
-      }
-    }
+  if (revealedCount === gLevel.SIZE * gLevel.SIZE - gLevel.MINES) {
+    alert('You Win!');
   }
-
-  if (totalCoveredCells === gGame.lives) {
-    alert('You Win!')
-    gGame.isOn = false
-  }
-  
-  return isGameOver
-}
-
-function setDifficulty(size) {
-  gLevel.SIZE = size
-  onInitGame()
-}
-
-function toggleDarkMode() {
-  let isDark = document.body.classList.toggle('dark-mode');
-  localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-}
-
-// On page load
-document.addEventListener('DOMContentLoaded', (event) => {
-  if (localStorage.getItem('darkMode') === 'enabled') {
-    document.body.classList.add('dark-mode');
-  }
-});
-
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
 }
