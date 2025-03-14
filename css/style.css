@@ -1,36 +1,47 @@
-body {
-  text-align: center;
-}
-/* Styles */
+/* CSS לשולה מוקשים */
 :root {
-  --background-color-light: #fdf4f4;
-  --text-color-light: #000000;
-  --background-color-dark: #161616;
-  --text-color-dark: #ffffff;
-  --highlight-color: #ffb300; /* Highlight color */
-  --primary-color: #e84a5f; /* Warm primary color */
-  --secondary-color: #ff5722; /* Modern secondary color */
-  --accent-color: #00bcd4; /* Refreshing accent color */
-  --button-hover-color: #ff9800;
+  --background-color-light: #5D3A6D; /* רקע כללי - סגול עמוק */
+  --text-color-light: #FFC107; /* צבע טקסט צהוב עמוק */
+  --background-color-dark: #3A2545; /* רקע כהה יותר למצב כהה */
+  --text-color-dark: #FFFFFF;
+  --highlight-color: #FFCA28; /* צבע הדגשה מוזהב */
+  --primary-color: #607D8B; /* כחול אפור לכפתורים */
+  --secondary-color: #455A64; /* רקע לוח המשחק - כחול אפור כהה */
+  --accent-color: #FFCA28; /* צבע אייקונים וכפתורים מיוחדים */
+  --button-hover-color: #FFD54F; /* צבע הובר יותר בהיר ונעים */
+  --border-radius: 10px;
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: Arial, sans-serif;
+  text-align: center;
   background-color: var(--background-color-light);
   color: var(--text-color-light);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   transition: background-color 0.5s, color 0.5s;
+  position: relative;
+}
+
+.dark-mode {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
 }
 
 .board-container {
-  border-collapse: collapse;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 20px;
-  border-radius: 15px;
+}
+
+.board {
+  border-collapse: collapse;
+  border-radius: var(--border-radius);
   overflow: hidden;
-  margin: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: var(--secondary-color);
 }
 
 .board td {
@@ -40,11 +51,11 @@ body {
   vertical-align: middle;
   border: 2px solid #999;
   font-size: 22px;
-  background-color: #615f5f;
+  background-color: #607D8B;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
 }
 
 .board td:hover {
@@ -58,9 +69,11 @@ button {
   padding: 12px 25px;
   font-size: 18px;
   border: none;
-  border-radius: 25px;
+  border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin: 5px;
 }
 
 button:hover {
@@ -77,21 +90,37 @@ button:hover {
   cursor: pointer;
   display: inline-block;
   transition: all 0.3s ease-in-out;
-  background-color: #ddd;
-  border-radius: 5px;
+  background-color: #607D8B;
+  border-radius: var(--border-radius);
 }
 
 .revealed {
-  background-color: lightgray;
+  background-color: #455A64;
 }
 
 .cell:empty {
-  background-color: #f0f0f0;
+  background-color: #37474F;
 }
 
-.dark-mode {
-  background-color: var(--background-color-dark);
-  color: var(--text-color-dark);
+#darkModeToggle {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 12px 20px;
+  background-color: #222;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: -3px 0 6px rgba(0, 0, 0, 0.3);
+}
+
+#darkModeToggle:hover {
+  background-color: var(--button-hover-color);
 }
 
 #hintButton {
@@ -99,7 +128,7 @@ button:hover {
   padding: 12px;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
   border: none;
   transition: all 0.3s ease;
 }
@@ -117,6 +146,7 @@ button:hover {
   border: none;
   transition: all 0.3s ease;
   border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #smileyButton:hover {
@@ -130,7 +160,7 @@ button:hover {
 }
 
 .smiley.normal {
-  color: #ffcc00;
+  color: var(--highlight-color);
 }
 
 .smiley.sad {
@@ -141,26 +171,105 @@ button:hover {
   color: #00ff00;
 }
 
-/* Responsive design */
 @media (max-width: 600px) {
   .board td {
-    width: 50px;
-    height: 50px;
+      width: 50px;
+      height: 50px;
   }
 
   button {
-    padding: 10px 20px;
-    font-size: 16px;
+      padding: 10px 20px;
+      font-size: 16px;
   }
 
   #smileyButton {
-    font-size: 30px;
-    padding: 10px;
+      font-size: 30px;
+      padding: 10px;
   }
 }
 
-/* Theme transitions */
-body, .board-container, button {
-  transition: background-color 0.5s, color 0.5s;
+/* CSS לשולה מוקשים */
+:root {
+  --background-color-light: #5D3A6D; /* רקע כללי - סגול עמוק */
+  --text-color-light: #FFC107; /* צבע טקסט צהוב עמוק */
+  --background-color-dark: #3A2545; /* רקע כהה יותר למצב כהה */
+  --text-color-dark: #FFFFFF;
+  --highlight-color: #FFCA28; /* צבע הדגשה מוזהב */
+  --primary-color: #607D8B; /* כחול אפור לכפתורים */
+  --secondary-color: #455A64; /* רקע לוח המשחק - כחול אפור כהה */
+  --accent-color: #FFCA28; /* צבע אייקונים וכפתורים מיוחדים */
+  --button-hover-color: #FFD54F; /* צבע הובר יותר בהיר ונעים */
+  --border-radius: 10px;
 }
 
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background-color 0.5s, color 0.5s;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-color-light);
+  margin-top: auto;
+}
+
+/* עיצוב כפתור עם אנימציה */
+.animated-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 140px;
+  height: 50px;
+  font-size: 18px;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-button.loading {
+  pointer-events: none;
+}
+
+.animated-button .loading-text {
+  display: none;
+}
+
+.animated-button.loading .loading-text {
+  display: block;
+}
+
+.animated-button .checkmark {
+  display: none;
+  font-size: 22px;
+}
+
+.animated-button.success .checkmark {
+  display: block;
+}
+
+.animated-button.success .default-text,
+.animated-button.loading .default-text {
+  display: none;
+}
+
+.animated-button:hover {
+  background-color: var(--button-hover-color);
+  transform: scale(1.05);
+}
