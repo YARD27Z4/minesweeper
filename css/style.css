@@ -273,3 +273,129 @@ footer {
   background-color: var(--button-hover-color);
   transform: scale(1.05);
 }
+
+      /* עיצוב כפתור עם אנימציה */
+      .animated-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 140px;
+        height: 50px;
+        font-size: 18px;
+        color: white;
+        background-color: #607D8B;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .animated-button.loading {
+        pointer-events: none;
+        background-color: #FFD54F;
+    }
+
+    .animated-button.success {
+        background-color: #4CAF50;
+    }
+
+    .animated-button .loading-text {
+        display: none;
+    }
+
+    .animated-button.loading .default-text {
+        display: none;
+    }
+
+    .animated-button.loading .loading-text {
+        display: block;
+    }
+
+    .animated-button.success .default-text,
+    .animated-button.loading .default-text {
+        display: none;
+    }
+
+    .animated-button.success .checkmark {
+        display: block;
+    }
+
+    .animated-button .checkmark {
+        display: none;
+        font-size: 22px;
+    }
+
+    /* עיצוב כפתור האימוג'י ללא רקע */
+    .btn {
+        background: none;
+        border: none;
+        font-size: 32px;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    /* סידור כפתורי הרמות בשורה אחת */
+    .levels-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .levels {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        background-color: #607D8B;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .levels:hover {
+        background-color: #FFD54F;
+    }
+
+    /* עיצוב כפתור Mega Hint ו-Exterminator */
+    .special-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .special-buttons button {
+        padding: 12px 25px;
+        font-size: 16px;
+        border-radius: 8px;
+        background-color: #4A90E2;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .special-buttons button:hover {
+        background-color: #357ABD;
+    }
+
+    .hint-section {
+        text-align: center;
+        margin-top: 20px;
+    }
+            /* עיצוב רמזים */
+    .hint-section {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .hint {
+        display: inline-block;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 5px;
+    }
+    .hint.active {
+        background-color: yellow;
+        border-radius: 5px;
+    }

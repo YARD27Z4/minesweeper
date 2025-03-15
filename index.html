@@ -5,39 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper Game</title>
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        /* עיצוב מחודש לכפתורים */
-        .levels {
-            display: inline-block;
-            width: 120px;
-            padding: 10px;
-            margin: 10px;
-            font-size: 16px;
-            text-align: center;
-            border-radius: 8px;
-            background-color: #607D8B;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .levels:hover {
-            background-color: #FFD54F;
-        }
-        
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        #darkModeToggle {
-            display: block;
-            margin: 20px auto;
-        }
-    </style>
+
 </head>
 <body>
     <button id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
@@ -50,42 +18,32 @@
         <tbody class="board"></tbody>
     </table>
     
-    <div class="button-container">
+    <div class="levels-container">
         <button class="easy levels" onclick="setDifficulty(4)">Easy</button>
         <button class="medium levels" onclick="setDifficulty(8)">Medium</button>
         <button class="hard levels" onclick="setDifficulty(12)">Hard</button>
     </div>
-    
-    <!-- כפתור עם אנימציה -->
-    <button class="animated-button" onclick="simulateLoading(this)">
-        <span class="default-text">Submit</span>
-        <span class="loading-text">Loading...</span>
-        <span class="checkmark">✔</span>
-    </button>
 
-    <script src="js/main.js"></script>
-    <script src="js/util.js"></script>
+    <div class="special-buttons">
+        <button onclick="activateMegaHint()">Mega Hint</button>
+        <button onclick="activateExterminator()">Mine Exterminator</button>
+    </div>
+
+    <div class="hint-section">
+        <h3>MINE EXTERMINATOR</h3>
+        <p>Clicking the “Exterminator” button will eliminate 3 existing mines randomly.<br>
+           These mines will disappear from the board, and neighbors' counts will be recalculated.</p>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/util.js"></script>
     <script>
-        function simulateLoading(button) {
-            button.classList.add("loading");
-            setTimeout(() => {
-                button.classList.remove("loading");
-                button.classList.add("success");
-            }, 2000);
+        function activateMegaHint() {
+            alert("Mega Hint activated! Select an area to reveal temporarily.");
         }
-        
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            let isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark);
-            document.getElementById('darkModeToggle').innerText = isDark ? 'Light Mode' : 'Dark Mode';
-        }
-        
-        window.onload = function () {
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('darkModeToggle').innerText = 'Light Mode';
-            }
+
+        function activateExterminator() {
+            alert("Mine Exterminator activated! 3 mines will be removed.");
         }
     </script>
 
